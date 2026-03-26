@@ -40,8 +40,22 @@ function Login() {
             required 
           />
         </div>
-        <button type="submit" className="btn btn-primary w-100">Login</button>
+        <button type="submit" className="btn btn-primary w-100 mb-3">Login</button>
       </form>
+      <div className="text-center mb-3">
+        <span className="text-muted">OR</span>
+      </div>
+      <a 
+        href="http://localhost:8080/oauth2/authorization/google" 
+        className="btn btn-outline-dark w-100 d-flex justify-content-center align-items-center"
+      >
+        <img 
+          src="https://img.icons8.com/color/16/000000/google-logo.png" 
+          alt="Google logo" 
+          className="me-2" 
+        />
+        Sign in with Google
+      </a>
     </div>
   );
 }

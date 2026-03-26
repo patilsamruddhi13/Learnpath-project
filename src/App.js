@@ -10,6 +10,7 @@ import IndustryTrends from './pages/industrytrends';
 import Profile from './pages/Profile';
 import  Profilesetup from './pages/Profilesetup';
 import Dashboard from './pages/Dashboard';
+import OAuth2RedirectHandler from './components/OAuth2RedirectHandler';
 import Psychometric from "./components/PshychometricTest/Pshychometric";
 import PsychometricResult from "./components/PshychometricTest/PsychometricResult";
 function App() { 
@@ -29,6 +30,7 @@ function App() {
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/profile-setup" element={< Profilesetup/>} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
          <Route path="/psychometric-test" element={<Psychometric />} />
         <Route path="/psychometric-result" element={<PsychometricResult />} /> 
 
