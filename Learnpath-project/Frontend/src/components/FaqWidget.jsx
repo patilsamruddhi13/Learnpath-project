@@ -46,11 +46,13 @@ const FaqWidget = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
-      {/* Chat Window */}
+    <>
+      {/* Chat Window — anchored independently above the FAB */}
       <div
-        className={`transform transition-all duration-300 ease-in-out origin-bottom-right shadow-2xl rounded-2xl flex flex-col bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-slate-700 overflow-hidden w-80 sm:w-96 ${
-          isOpen ? 'scale-100 opacity-100 h-[500px] mb-4' : 'scale-0 opacity-0 h-0 w-0 mb-0 pointer-events-none'
+        className={`fixed right-4 z-50 transform transition-all duration-300 ease-in-out origin-bottom-right shadow-2xl rounded-2xl flex flex-col bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-slate-700 overflow-hidden w-80 sm:w-96 ${
+          isOpen
+            ? 'scale-100 opacity-100 h-[500px] bottom-[76px]'
+            : 'scale-0 opacity-0 h-0 w-0 bottom-4 pointer-events-none'
         }`}
       >
         {/* Header */}
@@ -115,17 +117,17 @@ const FaqWidget = () => {
         </form>
       </div>
 
-      {/* Floating Action Button */}
+      {/* Floating Action Button — always pinned at extreme bottom-right */}
       <button
-        className={`bg-primary hover:bg-primary-dark text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none flex items-center justify-center ${
-          isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100 hover:-translate-y-1'
+        className={`fixed bottom-4 right-4 z-50 bg-primary hover:bg-primary-dark text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none flex items-center justify-center ${
+          isOpen ? 'scale-0 opacity-0 pointer-events-none' : 'scale-100 opacity-100 hover:-translate-y-1'
         }`}
         onClick={toggleChat}
         aria-label="Open chat"
       >
         <ChatBubbleLeftRightIcon className="w-7 h-7" />
       </button>
-    </div>
+    </>
   );
 };
 
