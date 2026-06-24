@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Trophy, ArrowRight, BarChart3, Briefcase, GraduationCap, Lightbulb, Building } from "lucide-react";
+import { saveUserProfile } from '../../api/api';
 
 const PsychometricResult = () => {
   const location = useLocation();
   const scores = location.state?.scores;
+
+  useEffect(() => {
+    if (!scores) return;
+    // Determine the winning goal key
+    const { placement, masters, entrepreneur, govt } = scores;
+    const maxScore = Math.max(placement, masters, entrepreneur, govt);
+    let derivedGoal = 'placement';
+    if (maxScore === masters)       derivedGoal = 'masters';
+    else if (maxScore === entrepreneur) derivedGoal = 'startup';
+    else if (maxScore === govt)     derivedGoal = 'govt';
+
+    // Persist to backend so Dashboard can use it
+    saveUserProfile({ goal: derivedGoal }).catch(() => {
+      // Silent fail — user can still see results
+    });
+  }, [scores]);
 
   if (!scores) {
     return (

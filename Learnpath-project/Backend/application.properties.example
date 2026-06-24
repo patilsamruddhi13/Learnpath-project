@@ -33,3 +33,7 @@ app.oauth2.authorizedRedirectUris=http://localhost:3000/oauth2/redirect
 # Spring AI Vertex AI Gemini Configuration
 spring.ai.vertex.ai.gemini.project-id=test-project-id
 spring.ai.vertex.ai.gemini.location=us-central1
+
+# ML Service URL (Python Flask)
+app.ml.url=http://127.0.0.1:5000
+

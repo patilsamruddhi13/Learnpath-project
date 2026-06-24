@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Mail, Lock, LogIn } from 'lucide-react';
-import api from '../api/api';
+import api, { fetchCurrentUser } from '../api/api';
 
 function Login() {
   const navigate = useNavigate();
@@ -21,7 +21,13 @@ function Login() {
       localStorage.setItem('accessToken', response.data.accessToken);
       // Dispatch a custom event to update navbar state across components immediately
       window.dispatchEvent(new Event('auth-change'));
-      navigate('/profile');
+      
+      const userRes = await fetchCurrentUser();
+      if (userRes.data.profileCompleted) {
+        navigate('/dashboard');
+      } else {
+        navigate('/profile');
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid email or password. Please try again.');
     } finally {

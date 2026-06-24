@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { fetchCurrentUser } from '../api/api';
 
 function OAuth2RedirectHandler() {
   const location = useLocation();
@@ -14,7 +15,20 @@ function OAuth2RedirectHandler() {
     if (token) {
       localStorage.setItem('accessToken', token);
       window.dispatchEvent(new Event('auth-change'));
-      navigate('/dashboard', { replace: true });
+      
+      // Check profileCompleted before routing
+      fetchCurrentUser()
+        .then((res) => {
+          if (res.data.profileCompleted) {
+            navigate('/dashboard', { replace: true });
+          } else {
+            navigate('/profile', { replace: true });
+          }
+        })
+        .catch(() => {
+          // Fallback if /api/user/me fails
+          navigate('/profile', { replace: true });
+        });
     } else {
       console.error("OAuth2 Login Failed", error);
       navigate('/login', { replace: true });

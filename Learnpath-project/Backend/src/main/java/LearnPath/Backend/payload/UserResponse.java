@@ -12,12 +12,21 @@ public class UserResponse {
     private String email;
     private String picture;
     private AuthProvider provider;
+    private String year;
+    private String branch;
+    private String goal;
+    private boolean profileCompleted;
 
-    public UserResponse(Long id, String name, String email, String picture, AuthProvider provider) {
+    public UserResponse(Long id, String name, String email, String picture, AuthProvider provider,
+                        String year, String branch, String goal, boolean profileCompleted) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.picture = picture;
         this.provider = provider;
+        this.year = year;
+        this.branch = branch;
+        this.goal = goal;
+        this.profileCompleted = profileCompleted;
     }
 }

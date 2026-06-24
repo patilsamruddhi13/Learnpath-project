@@ -35,3 +35,13 @@ api.interceptors.response.use(
 );
 
 export default api;
+
+// Save user profile (year, branch, goal)
+export const saveUserProfile = (data) => api.post('/api/user/profile', data);
+
+// Fetch current user with profile fields
+export const fetchCurrentUser = () => api.get('/api/user/me');
+
+// Fetch personalized recommendation from Spring Boot proxy
+export const fetchRecommendation = () => api.get('/api/recommend');
+

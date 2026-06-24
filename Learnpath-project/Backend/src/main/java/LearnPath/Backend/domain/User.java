@@ -47,6 +47,15 @@ public class User {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "year")
+    private String year;
+
+    @Column(name = "branch")
+    private String branch;
+
+    @Column(name = "goal")
+    private String goal;
+
     public User() {
         this.createdAt = LocalDateTime.now();
     }
