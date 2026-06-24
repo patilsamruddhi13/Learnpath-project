@@ -1,11 +1,17 @@
 import React, { useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { Trophy, ArrowRight, BarChart3, Briefcase, GraduationCap, Lightbulb, Building } from "lucide-react";
+import { Trophy, ArrowRight, PieChart, Briefcase, GraduationCap, Lightbulb, Building } from "lucide-react";
 import { saveUserProfile } from '../../api/api';
+import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { useTheme } from '../../context/ThemeContext';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const PsychometricResult = () => {
   const location = useLocation();
   const scores = location.state?.scores;
+  const { isDarkMode } = useTheme();
 
   useEffect(() => {
     if (!scores) return;
@@ -62,11 +68,44 @@ const PsychometricResult = () => {
   const getPercentage = (score) => Math.round((score / totalScore) * 100) || 0;
 
   const scoreData = [
-    { label: "Placement", score: placement, percentage: getPercentage(placement), color: "bg-blue-500" },
-    { label: "Masters", score: masters, percentage: getPercentage(masters), color: "bg-purple-500" },
-    { label: "Entrepreneur", score: entrepreneur, percentage: getPercentage(entrepreneur), color: "bg-orange-500" },
-    { label: "Government", score: govt, percentage: getPercentage(govt), color: "bg-green-500" },
+    { label: "Placement", score: placement, percentage: getPercentage(placement) },
+    { label: "Masters", score: masters, percentage: getPercentage(masters) },
+    { label: "Entrepreneur", score: entrepreneur, percentage: getPercentage(entrepreneur) },
+    { label: "Government", score: govt, percentage: getPercentage(govt) },
   ];
+
+  const chartData = {
+    labels: scoreData.map((s) => s.label),
+    datasets: [
+      {
+        data: scoreData.map((s) => s.percentage),
+        backgroundColor: ['#3b82f6', '#a855f7', '#f97316', '#22c55e'],
+        borderColor: isDarkMode ? '#1e293b' : '#ffffff',
+        borderWidth: 3,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          color: isDarkMode ? '#f8fafc' : '#0f172a',
+          padding: 16,
+          font: { size: 13 },
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => ` ${ctx.label}: ${ctx.parsed}%`,
+        },
+      },
+    },
+  };
 
   return (
     <div className="py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -106,25 +145,12 @@ const PsychometricResult = () => {
         {/* Score Analysis Card */}
         <div className="bg-surface-light dark:bg-surface-dark rounded-3xl shadow-md border border-gray-100 dark:border-slate-700 p-8 h-full">
           <div className="flex items-center gap-3 mb-8">
-            <BarChart3 className="text-secondary" size={24} />
+            <PieChart className="text-secondary" size={24} />
             <h3 className="text-xl font-bold text-text-light dark:text-text-dark">Score Analysis</h3>
           </div>
 
-          <div className="space-y-6">
-            {scoreData.map((item, index) => (
-              <div key={index}>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="font-medium text-text-light dark:text-text-dark">{item.label}</span>
-                  <span className="text-sm font-bold text-text-muted-light dark:text-text-muted-dark">{item.percentage}%</span>
-                </div>
-                <div className="w-full bg-gray-100 dark:bg-slate-700 rounded-full h-2.5">
-                  <div
-                    className={`h-2.5 rounded-full ${item.color} transition-all duration-1000 ease-out`}
-                    style={{ width: `${item.percentage}%` }}
-                  ></div>
-                </div>
-              </div>
-            ))}
+          <div className="relative h-56 w-full flex items-center justify-center">
+            <Doughnut data={chartData} options={chartOptions} />
           </div>
         </div>
 
