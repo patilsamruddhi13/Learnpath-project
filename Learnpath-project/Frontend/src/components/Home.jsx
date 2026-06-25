@@ -1,8 +1,21 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 const Home = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('accessToken');
+      setIsAuthenticated(!!token);
+    };
+
+    checkAuth();
+    window.addEventListener('auth-change', checkAuth);
+    return () => window.removeEventListener('auth-change', checkAuth);
+  }, []);
+
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center text-center px-4 sm:px-6 lg:px-8">
       <div className="relative">
@@ -29,12 +42,16 @@ const Home = () => {
           Get Personalized Recommendations
           <ArrowRight size={20} />
         </Link>
+
+        {/* Only show Log In button when not authenticated */}
+        {!isAuthenticated && (
         <Link
           to="/login"
           className="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-text-light dark:text-text-dark bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-xl transition-all"
         >
           Log In
         </Link>
+      )}
       </div>
     </div>
   );
